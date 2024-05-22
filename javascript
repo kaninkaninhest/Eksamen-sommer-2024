@@ -1,48 +1,69 @@
-// Funktion til dark mode
-
 <script>
-jQuery(document).ready(function($) {
+jQuery(document).ready(function() {
 
     function toggleDarkMode() {
-        $('body').toggleClass('dark-mode');
-        localStorage.setItem('darkMode', $('body').hasClass('dark-mode'));
-    }
-
-    if (localStorage.getItem('darkMode') === 'true') {
-        $('body').addClass('dark-mode');
-        $('#dark-mode-toggle').prop('checked', true);
-    } else {
-        $('body').removeClass('dark-mode');
-        $('#dark-mode-toggle').prop('checked', false);
+        jQuery('body').toggleClass('dark-mode');
+        localStorage.setItem('darkMode', jQuery('body').hasClass('dark-mode'));
     }
 
     function replaceSvgColorWithNewColor() {
-        $('svg').each(function() {
-            $(this).find('*').each(function() {
-                var fill = $(this).css('fill');
+        jQuery('svg').each(function() {
+            jQuery(this).find('*').each(function() {
+                var fill = jQuery(this).css('fill');
                 if (fill && (fill === 'rgb(60, 179, 113)' || fill === '#3CB371')) {
-                    $(this).attr('data-original-fill', fill);
-                    $(this).css('fill', '#121212');
+                    jQuery(this).attr('data-original-fill', fill);
+                    jQuery(this).css('fill', '#121212');
                 }
             });
         });
     }
 
-    if ($('body').hasClass('dark-mode')) {
+    if (localStorage.getItem('darkMode') === 'true') {
+        jQuery('body').addClass('dark-mode');
+        jQuery('#dark-mode-toggle').prop('checked', true);
         replaceSvgColorWithNewColor();
+    } else {
+        jQuery('body').removeClass('dark-mode');
+        jQuery('#dark-mode-toggle').prop('checked', false);
     }
 
-    $('#dark-mode-toggle').change(function() {
+    jQuery('#dark-mode-toggle').change(function() {
         toggleDarkMode();
-        if ($('body').hasClass('dark-mode')) {
+        if (jQuery('body').hasClass('dark-mode')) {
             replaceSvgColorWithNewColor();
         } else {
-            $('svg').find('[data-original-fill]').each(function() {
-                var originalFill = $(this).attr('data-original-fill');
-                $(this).css('fill', originalFill);
+            jQuery('svg').find('[data-original-fill]').each(function() {
+                var originalFill = jQuery(this).attr('data-original-fill');
+                jQuery(this).css('fill', originalFill);
             });
         }
     });
 });
 
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    for (let i = 1; i <= 6; i++) {
+        const checkbox = document.getElementById(`toggle-strikethrough-${i}`);
+        const textElement = document.querySelector(`.step${i}`);
+
+        if (checkbox && textElement) {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    textElement.classList.add('strikethrough');
+                } else {
+                    textElement.classList.remove('strikethrough');
+                }
+            });
+        } else {
+            if (!checkbox) {
+                console.error(`Checkbox with ID toggle-strikethrough-${i} not found`);
+            }
+            if (!textElement) {
+                console.error(`Text element with class step${i} not found`);
+            }
+        }
+    }
+});
 </script>
